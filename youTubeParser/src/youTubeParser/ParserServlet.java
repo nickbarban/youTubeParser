@@ -40,19 +40,27 @@ public class ParserServlet extends HttpServlet {
 	    String strAmount = request.getParameter("amount");
 	    String strNestingLevel= request.getParameter("nest");
 	    String HTTPLink = request.getParameter("link");
-	    if (strAmount != null && strNestingLevel != null ) {
+	    if (strAmount != null && strNestingLevel != null && HTTPLink != null) {
 	    	try {
 				int amount = Integer.parseInt(strAmount);
+				System.out.println(amount);
 				int nestingLevel = Integer.parseInt(strNestingLevel);
+				System.out.println(nestingLevel);
 				YouTubeParser.parse(amount, nestingLevel, HTTPLink);
 				out.write("<p>Amount: " + amount + "</p>\n");
 				out.write("<p>NestingLevel: " + nestingLevel + "</p>\n");
 				out.write("<p>HTTPL link: " + HTTPLink + "</p>\n");
 				out.write("<p><b>Amount of links: " + YouTubeParser.parsedLinks.size() + "</p>\n");
+				int count = 0;
+				for (String outString : YouTubeParser.parsedLinks) {
+					out.write("<p><b>" + (++count) + ": " + outString + "</p>\n");
+				}
 			} catch (NumberFormatException e) {
 				out.write("<p>WRONG INPUTED PARAMETER \"AMOUNT\"</p>\n");
 			}
-	    } // if
+	    } else {
+	    	System.out.println(strAmount + "||" + strNestingLevel + "||" + HTTPLink);
+	    }
 	    
 	    out.write("</body></html>");
 	} // doGet
